@@ -9,3 +9,4 @@ lesson 05. Animations: https://delilah07.github.io/threejs-journey-course/lesson
 lesson 06. Cameras: https://delilah07.github.io/threejs-journey-course/lesson-06/dist/ \
 lesson 07. Fullscreen and resizing: https://delilah07.github.io/threejs-journey-course/lesson-07/dist/ \
 lesson 08. Geometries: https://delilah07.github.io/threejs-journey-course/lesson-08/dist/ \
+lesson 09. Debug UI: https://delilah07.github.io/threejs-journey-course/lesson-09/dist/ \
