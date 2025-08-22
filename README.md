@@ -8,3 +8,4 @@ lesson 04. Transform objects: https://delilah07.github.io/threejs-journey-course
 lesson 05. Animations: https://delilah07.github.io/threejs-journey-course/lesson-05/dist/ \
 lesson 06. Cameras: https://delilah07.github.io/threejs-journey-course/lesson-06/dist/ \
 lesson 07. Fullscreen and resizing: https://delilah07.github.io/threejs-journey-course/lesson-07/dist/ \
+lesson 08. Geometries: https://delilah07.github.io/threejs-journey-course/lesson-08/dist/ \
