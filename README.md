@@ -11,3 +11,4 @@ lesson 07. Fullscreen and resizing: https://delilah07.github.io/threejs-journey-
 lesson 08. Geometries: https://delilah07.github.io/threejs-journey-course/lesson-08/dist/ \
 lesson 09. Debug UI: https://delilah07.github.io/threejs-journey-course/lesson-09/dist/ \
 lesson 10. Textures: https://delilah07.github.io/threejs-journey-course/lesson-10/dist/ \
+lesson 11. Materials: https://delilah07.github.io/threejs-journey-course/lesson-11/dist/ \
