@@ -12,3 +12,4 @@ lesson 08. Geometries: https://delilah07.github.io/threejs-journey-course/lesson
 lesson 09. Debug UI: https://delilah07.github.io/threejs-journey-course/lesson-09/dist/ \
 lesson 10. Textures: https://delilah07.github.io/threejs-journey-course/lesson-10/dist/ \
 lesson 11. Materials: https://delilah07.github.io/threejs-journey-course/lesson-11/dist/ \
+lesson 12. 3D Text: https://delilah07.github.io/threejs-journey-course/lesson-12/dist/ \
