@@ -2,7 +2,8 @@
 
 Course by Bruno Simon
 
-Chapter 1. BASICS: 13 lessons\
+Chapter 01. BASICS: 13 lessons \
+\
 lesson 03. First Three.js Project: https://delilah07.github.io/threejs-journey-course/lesson-03/dist/ \
 lesson 04. Transform objects: https://delilah07.github.io/threejs-journey-course/lesson-04/dist/ \
 lesson 05. Animations: https://delilah07.github.io/threejs-journey-course/lesson-05/dist/ \
@@ -13,3 +14,7 @@ lesson 09. Debug UI: https://delilah07.github.io/threejs-journey-course/lesson-0
 lesson 10. Textures: https://delilah07.github.io/threejs-journey-course/lesson-10/dist/ \
 lesson 11. Materials: https://delilah07.github.io/threejs-journey-course/lesson-11/dist/ \
 lesson 12. 3D Text: https://delilah07.github.io/threejs-journey-course/lesson-12/dist/ \
+
+Chapter 02. Classic techniques: 6 lessons \
+\
+lesson 14. Lights: https://delilah07.github.io/threejs-journey-course/lesson-14/dist/ \
