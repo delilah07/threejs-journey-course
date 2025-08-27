@@ -21,14 +21,14 @@ const scene = new THREE.Scene();
 
 // Textures
 const textureLoader = new THREE.TextureLoader();
-const matcapTexture = textureLoader.load('/textures/matcaps/8.png');
+const matcapTexture = textureLoader.load('./textures/matcaps/8.png');
 matcapTexture.colorSpace = THREE.SRGBColorSpace;
 
 const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
 
 // Fonts
 const fontLoader = new FontLoader();
-fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
+fontLoader.load('./fonts/helvetiker_regular.typeface.json', (font) => {
   const textGeometry = new TextGeometry('Iryna is learning Three.js', {
     // font: font,
     font,
