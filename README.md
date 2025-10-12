@@ -20,3 +20,4 @@ Chapter 02. Classic techniques: 6 lessons \
 lesson 14. Lights: https://delilah07.github.io/threejs-journey-course/lesson-14/dist/ \
 lesson 15. Shadows: https://delilah07.github.io/threejs-journey-course/lesson-15/dist/ \
 lesson 16. Haunted House: https://delilah07.github.io/threejs-journey-course/lesson-16/dist/ \
+lesson 17. Particles: https://delilah07.github.io/threejs-journey-course/lesson-17/dist/ \
