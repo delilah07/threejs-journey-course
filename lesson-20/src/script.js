@@ -30,7 +30,23 @@ const environmentMapTexture = cubeTextureLoader.load([
 const world = new CANNON.World();
 world.gravity.set(0, -9.82, 0)
 
+// Physic Material
+// const concreteMaterial = new CANNON.Material('concrete')
+// const plasticMaterial = new CANNON.Material('plastic');
+const defaultMaterial = new CANNON.Material('default');
 
+// const concretePlasticContactMaterial = new CANNON.ContactMaterial(
+const defaultContactMaterial = new CANNON.ContactMaterial(
+    defaultMaterial, //concreteMaterial,
+    defaultMaterial, // plasticMaterial,
+    {
+        friction: 0.1,
+        restitution: 0.7
+    }
+)
+// world.addContactMaterial(concretePlasticContactMaterial)
+world.addContactMaterial(defaultContactMaterial)
+world.defaultContactMaterial = defaultContactMaterial
 
 // Physic Sphere
 const sphereShape = new CANNON.Sphere(0.5);
@@ -39,8 +55,14 @@ const sphereShape = new CANNON.Sphere(0.5);
 const sphereBody = new CANNON.Body({
     mass: 1,
     position: new CANNON.Vec3(0, 3, 0),
-    shape: sphereShape
+    shape: sphereShape,
+    // material: plasticMaterial
+    // material: defaultMaterial
 })
+sphereBody.applyLocalForce(
+    new CANNON.Vec3(150, 0, 0),
+    new CANNON.Vec3(0, 0, 0)
+)
 world.addBody(sphereBody)
 
 // Physic Floor
@@ -48,7 +70,10 @@ const floorShape = new CANNON.Plane()
 const floorBody = new CANNON.Body()
 floorBody.mass = 0; // or not write this because it's default
 floorBody.addShape(floorShape);
-world.addBody(floorBody)
+// floorBody.material = concreteMaterial
+// floorBody.material = defaultMaterial
+world.addBody(floorBody);
+
 floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(-1, 0, 0), Math.PI * 0.5); 
 
 
@@ -121,7 +146,7 @@ window.addEventListener('resize', () =>
 // Camera
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(- 3, 3, 3)
+camera.position.set(- 3, 3, 5)
 scene.add(camera)
 
 // Controls
@@ -148,6 +173,7 @@ const tick = () =>
     oldElapsedTime = elapsedTime;
 
     // Update physics world
+    sphereBody.applyForce(new CANNON.Vec3(-0.5, 0, 0), sphereBody.position)
     world.step(1/60, deltaTime, 3);
 
     // sphere.position.x = sphereBody.position.x
