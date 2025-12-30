@@ -28,3 +28,4 @@ Chapter 03. Advanced techniques: 7 lessons \
 \
 lesson 20. Physics: https://delilah07.github.io/threejs-journey-course/lesson-20/dist/ \
 lesson 21. Imported models: https://delilah07.github.io/threejs-journey-course/lesson-21/dist/ \
+lesson 22. Raycaster and Mouse Events: https://delilah07.github.io/threejs-journey-course/lesson-22/dist/ \
