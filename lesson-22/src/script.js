@@ -1,8 +1,9 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import GUI from 'lil-gui'
+import GUI from 'lil-gui';
+import { GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
 
-//* Base
+// Base
 // Debug
 const gui = new GUI()
 
@@ -67,6 +68,31 @@ window.addEventListener('resize', () =>
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
+// Mouse event
+const mouse = new THREE.Vector2()
+
+window.addEventListener('mousemove', (event) => {
+    mouse.x = event.clientX / sizes.width * 2 - 1;
+    mouse.y = - event.clientY / sizes.height * 2 + 1;
+})
+
+// Click event
+window.addEventListener('click', (event) => {
+    if(currentIntersect){
+        switch(currentIntersect.object){
+            case object1:
+                console.log('click in the sphere 1')
+                break
+            case object2:
+                console.log('click in the sphere 2')
+                break
+            case object3:
+                console.log('click in the sphere 3')
+                break
+        }
+    }
+})
+
 // Camera
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
@@ -84,8 +110,32 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+// Model
+const gltfLoader =new GLTFLoader();
+let model = null;
+gltfLoader.load(
+    './models/Duck/glTF-Binary/Duck.glb',
+   (gltf) => {
+        model = gltf.scene;
+        model.position.y = -1.2;
+        scene.add(model);
+    }
+)
+
+// Lights
+// Ambient Light
+const ambientLight = new THREE.AmbientLight('#fff', 0.9)
+scene.add(ambientLight)
+
+// Direct Light
+const directionalLight = new THREE.DirectionalLight('#fff', 2.1);
+directionalLight.position.set(1, 2, 3)
+scene.add(directionalLight)
+
 // Animate
 const clock = new THREE.Clock()
+
+let currentIntersect = null;
 
 const tick = () =>
 {
@@ -97,15 +147,16 @@ const tick = () =>
     object3.position.y = Math.sin(elapsedTime * 1.4) * 1.5;
 
     // cast a ray
-    const rayOrigin = new THREE.Vector3(-3, 0, 0);
-    const rayDirection = new THREE.Vector3(10, 0, 0);
-    rayDirection.normalize();
+    // const rayOrigin = new THREE.Vector3(-3, 0, 0);
+    // const rayDirection = new THREE.Vector3(10, 0, 0);
+    // rayDirection.normalize();
 
-    raycaster.set(rayOrigin, rayDirection)
+    // raycaster.set(rayOrigin, rayDirection)
+
+    raycaster.setFromCamera(mouse, camera)
 
     const objectsToTest = [object1, object2, object3]
     const intersects = raycaster.intersectObjects(objectsToTest);
-    // console.log(intersects.length)
 
     for (const object of objectsToTest){
         object.material.color.set('#ff0000')
@@ -114,7 +165,24 @@ const tick = () =>
         intersect.object.material.color.set('#0000ff')
     }
 
+    // Mouse enter and mouse leave
+    if(intersects.length){
+        if(!currentIntersect) console.log('mouse enter')
+        currentIntersect = intersects[0]
+    } else {
+        if(currentIntersect) console.log('mouse leave')
+        currentIntersect = null
+    }
 
+    // Intersect with Duck
+    if (model){
+        const modelIntersects = raycaster.intersectObject(model);
+        modelIntersects.length 
+            ? model.scale.set(1.1, 1.1, 1.1)
+            : model.scale.set(1, 1, 1)
+        
+    }
+    
     // Update controls
     controls.update()
 
