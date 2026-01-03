@@ -22,7 +22,7 @@ lesson 15. Shadows: https://delilah07.github.io/threejs-journey-course/lesson-15
 lesson 16. Haunted House: https://delilah07.github.io/threejs-journey-course/lesson-16/dist/ \
 lesson 17. Particles: https://delilah07.github.io/threejs-journey-course/lesson-17/dist/ \
 lesson 18. Galaxy Generator: https://delilah07.github.io/threejs-journey-course/lesson-18/dist/ \
-lesson 19. Website with parallax scroll: https://delilah07.github.io/threejs-journey-course/lesson-19/dist/ \
+lesson 19. Website with parallax scroll: https://delilah07.github.io/threejs-journey-course/lesson-19/dist/ 
 
 Chapter 03. Advanced techniques: 7 lessons \
 \
@@ -30,3 +30,4 @@ lesson 20. Physics: https://delilah07.github.io/threejs-journey-course/lesson-20
 lesson 21. Imported models: https://delilah07.github.io/threejs-journey-course/lesson-21/dist/ \
 lesson 22. Raycaster and Mouse Events: https://delilah07.github.io/threejs-journey-course/lesson-22/dist/ \
 lesson 23. Custom models with Blender: https://delilah07.github.io/threejs-journey-course/lesson-23/dist/ \
+lesson 24. Environment map: https://delilah07.github.io/threejs-journey-course/lesson-24/dist/ \
