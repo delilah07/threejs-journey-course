@@ -31,3 +31,4 @@ lesson 21. Imported models: https://delilah07.github.io/threejs-journey-course/l
 lesson 22. Raycaster and Mouse Events: https://delilah07.github.io/threejs-journey-course/lesson-22/dist/ \
 lesson 23. Custom models with Blender: https://delilah07.github.io/threejs-journey-course/lesson-23/dist/ \
 lesson 24. Environment map: https://delilah07.github.io/threejs-journey-course/lesson-24/dist/ \
+lesson 25. Realistic render: https://delilah07.github.io/threejs-journey-course/lesson-25/dist/ \
