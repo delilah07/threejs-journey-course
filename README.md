@@ -32,4 +32,5 @@ lesson 22. Raycaster and Mouse Events: https://delilah07.github.io/threejs-journ
 lesson 23. Custom models with Blender: https://delilah07.github.io/threejs-journey-course/lesson-23/dist/ \
 lesson 24. Environment map: https://delilah07.github.io/threejs-journey-course/lesson-24/dist/ \
 lesson 25. Realistic render: https://delilah07.github.io/threejs-journey-course/lesson-25/dist/ \
-lesson 26. Code structuring for bigger projects: https://delilah07.github.io/threejs-journey-course/lesson-26/dist/
+lesson 26. Code structuring for bigger projects: https://delilah07.github.io/threejs-journey-course/lesson-26/dist/ \
+            debugger: https://delilah07.github.io/threejs-journey-course/lesson-26/dist/#debug
