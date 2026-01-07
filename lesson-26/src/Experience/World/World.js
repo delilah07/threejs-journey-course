@@ -7,11 +7,17 @@ export default class World {
         
         this.scene = this.experience.scene
 
-        // // Test mesh
-        // const testMesh = new THREE.Mesh(
-        //     new THREE.BoxGeometry(1, 1, 1),
-        //     new THREE.MeshBasicMaterial({wireframe:true})
-        // )
-        // this.scene.add(testMesh)
+        this.newMesh()
+    }
+    newMesh(){
+        // Test mesh
+        console.log('start')
+        const testMesh = new THREE.Mesh(
+            new THREE.BoxGeometry(1, 1, 1),
+            new THREE.MeshBasicMaterial({ wireframe: true })
+        )
+        console.log(testMesh)
+        this.scene.add(testMesh)
+        console.log(this.scene)
     }
 }

@@ -32,13 +32,6 @@ export default class Experience {
 
         // Time tick event
         this.time.on('tick', () => this.update())
-
-            // Test mesh
-                const testMesh = new THREE.Mesh(
-                    new THREE.BoxGeometry(1, 1, 1),
-                    new THREE.MeshBasicMaterial({wireframe:true})
-                )
-                this.scene.add(testMesh)
     }
 
     resize(){
