@@ -16,7 +16,7 @@ const scene = new THREE.Scene()
 
 // Textures
 const textureLoader = new THREE.TextureLoader()
-const flagTexture = textureLoader.load('/textures/flag-ukraine.png')
+const flagTexture = textureLoader.load('./textures/flag-ukraine.png')
 
 // Test mesh
 // Geometry
@@ -32,7 +32,8 @@ geometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1))
 
 // Material
 // const material = new THREE.MeshBasicMaterial()
-const material = new THREE.RawShaderMaterial({
+// const material = new THREE.RawShaderMaterial({
+const material = new THREE.ShaderMaterial({
     vertexShader:  testVertexShaser,
     fragmentShader: testFragmentShaser,
     // wireframe: true,
