@@ -4261,7 +4261,20 @@ void main()
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 
     vUv = uv;
-}`,bp=`varying vec2 vUv;
+}`,bp=`#define PI 3.1415926535897932384626433832795
+
+varying vec2 vUv;
+
+float random(vec2 st){
+    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+vec2 rotate(vec2 uv, float rotation, vec2 mid){
+    return vec2(
+      cos(rotation) * (uv.x - mid.x) + sin(rotation) * (uv.y - mid.y) + mid.x,
+      cos(rotation) * (uv.y - mid.y) - sin(rotation) * (uv.x - mid.x) + mid.y
+    );
+}
 
 void main()
 {
@@ -4358,9 +4371,95 @@ void main()
     
 
     
-    float square1 = step(0.2, max(abs(vUv.x - 0.5), abs(vUv.y - 0.5)));
-    float square2 = 1.0 - step(0.25, max(abs(vUv.x - 0.5), abs(vUv.y - 0.5)));
-    float strength = square1 * square2;
+    
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+    float strength = 1.0 - step(0.01, abs(distance(vUv, vec2(0.5)) - 0.25));
     gl_FragColor = vec4(vec3(strength), 1.0);
 }`;new Ys;const Io=document.querySelector("canvas.webgl"),qs=new oc,wp=new Ci(1,1,32,32),Rp=new on({vertexShader:Ap,fragmentShader:bp,side:Ge}),Cp=new Xe(wp,Rp);qs.add(Cp);const ke={width:window.innerWidth,height:window.innerHeight};window.addEventListener("resize",()=>{ke.width=window.innerWidth,ke.height=window.innerHeight,fi.aspect=ke.width/ke.height,fi.updateProjectionMatrix(),Ti.setSize(ke.width,ke.height),Ti.setPixelRatio(Math.min(window.devicePixelRatio,2))});const fi=new Le(75,ke.width/ke.height,.1,100);fi.position.set(.25,-.25,1);qs.add(fi);const No=new tp(fi,Io);No.enableDamping=!0;const Ti=new Jf({canvas:Io});Ti.setSize(ke.width,ke.height);Ti.setPixelRatio(Math.min(window.devicePixelRatio,2));const Fo=()=>{No.update(),Ti.render(qs,fi),window.requestAnimationFrame(Fo)};Fo();
-//# sourceMappingURL=index-W6Du37to.js.map
+//# sourceMappingURL=index-bmyQu6uS.js.map
