@@ -38,3 +38,4 @@ lesson 26. Code structuring for bigger projects: https://delilah07.github.io/thr
 Chapter 04. Shaders: 18 lessons \
 \
 lesson 27. Shaders: https://delilah07.github.io/threejs-journey-course/lesson-27/dist/ \
+lesson 28. Shader patterns: https://delilah07.github.io/threejs-journey-course/lesson-28/dist/ \
