@@ -40,3 +40,4 @@ Chapter 04. Shaders: 18 lessons \
 lesson 27. Shaders: https://delilah07.github.io/threejs-journey-course/lesson-27/dist/ \
 lesson 28. Shader patterns: https://delilah07.github.io/threejs-journey-course/lesson-28/dist/ \
 lesson 29. Raging sea: https://delilah07.github.io/threejs-journey-course/lesson-29/dist/ \
+lesson 30. Animated galaxy: https://delilah07.github.io/threejs-journey-course/lesson-30/dist/ \
