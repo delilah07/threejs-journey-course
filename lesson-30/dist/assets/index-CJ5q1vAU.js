@@ -4259,6 +4259,8 @@ void main() {
 
 attribute float aScale;
 
+varying vec3 vColor;
+
 void main(){\r
     
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);\r
@@ -4268,8 +4270,13 @@ void main(){\r
 
     
     gl_PointSize = uSize * aScale;\r
-    gl_PointSize *= ( 1.0 / - viewPosition.z );\r
-}`,Vp=`void main(){\r
+    gl_PointSize *= ( 1.0 / - viewPosition.z );
+
+    
+    vColor = color;\r
+}`,Vp=`varying vec3 vColor;
+
+ void main(){\r
     
 
     
@@ -4289,8 +4296,12 @@ void main(){\r
     strength = 1.0 - strength;\r
     strength = pow(strength, 10.0);
 
-    gl_FragColor = vec4(vec3(strength), 1.0);
+    
+
+    
+    vec3 color = mix(vec3(0.0), vColor, strength);\r
+    gl_FragColor = vec4(color, 1.0);
 
     #include <colorspace_fragment>\r
 }`;const kn=new ra,Yo=document.querySelector("canvas.webgl"),vr=new xc,kt={};kt.count=2e5;kt.size=.005;kt.radius=5;kt.branches=3;kt.spin=1;kt.randomness=.5;kt.randomnessPower=3;kt.insideColor="#ff6030";kt.outsideColor="#1b3984";let ri=null,ns=null,or=null;const En=()=>{or!==null&&(ri.dispose(),ns.dispose(),vr.remove(or)),ri=new cn;const i=new Float32Array(kt.count*3),t=new Float32Array(kt.count*3),e=new Float32Array(kt.count*1),n=new Xt(kt.insideColor),r=new Xt(kt.outsideColor);for(let s=0;s<kt.count;s++){const a=s*3,o=Math.random()*kt.radius,l=s%kt.branches/kt.branches*Math.PI*2,c=Math.pow(Math.random(),kt.randomnessPower)*(Math.random()<.5?1:-1)*kt.randomness*o,u=Math.pow(Math.random(),kt.randomnessPower)*(Math.random()<.5?1:-1)*kt.randomness*o,d=Math.pow(Math.random(),kt.randomnessPower)*(Math.random()<.5?1:-1)*kt.randomness*o;i[a]=Math.cos(l)*o+c,i[a+1]=u,i[a+2]=Math.sin(l)*o+d;const f=n.clone();f.lerp(r,o/kt.radius),t[a]=f.r,t[a+1]=f.g,t[a+2]=f.b,e[s]=Math.random()}ri.setAttribute("position",new Re(i,3)),ri.setAttribute("color",new Re(t,3)),ri.setAttribute("aScale",new Re(e,1)),ns=new ln({depthWrite:!1,blending:is,vertexColors:!0,vertexShader:Hp,fragmentShader:Vp,uniforms:{uSize:{value:30*vi.getPixelRatio()}}}),or=new yc(ri,ns),vr.add(or)};kn.add(kt,"count").min(100).max(1e6).step(100).onFinishChange(En);kn.add(kt,"radius").min(.01).max(20).step(.01).onFinishChange(En);kn.add(kt,"branches").min(2).max(20).step(1).onFinishChange(En);kn.add(kt,"randomness").min(0).max(2).step(.001).onFinishChange(En);kn.add(kt,"randomnessPower").min(1).max(10).step(.001).onFinishChange(En);kn.addColor(kt,"insideColor").onFinishChange(En);kn.addColor(kt,"outsideColor").onFinishChange(En);const We={width:window.innerWidth,height:window.innerHeight};window.addEventListener("resize",()=>{We.width=window.innerWidth,We.height=window.innerHeight,Sn.aspect=We.width/We.height,Sn.updateProjectionMatrix(),vi.setSize(We.width,We.height),vi.setPixelRatio(Math.min(window.devicePixelRatio,2))});const Sn=new Ie(75,We.width/We.height,.1,100);Sn.position.x=3;Sn.position.y=3;Sn.position.z=3;vr.add(Sn);const qo=new mp(Sn,Yo);qo.enableDamping=!0;const vi=new fp({canvas:Yo});vi.setSize(We.width,We.height);vi.setPixelRatio(Math.min(window.devicePixelRatio,2));En();const kp=new Rc,$o=()=>{kp.getElapsedTime(),qo.update(),vi.render(vr,Sn),window.requestAnimationFrame($o)};$o();
-//# sourceMappingURL=index-CHoFMmHp.js.map
+//# sourceMappingURL=index-CJ5q1vAU.js.map
