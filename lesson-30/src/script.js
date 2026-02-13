@@ -76,9 +76,7 @@ const generateGalaxy = () =>
 
         // Scale
         scales[i] = Math.random();
-
     }
-    console.log(renderer.getPixelRatio())
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
@@ -92,7 +90,7 @@ const generateGalaxy = () =>
         vertexShader: galaxyVertexShader,
         fragmentShader: galaxyFragmentShader,
         uniforms: {
-            uSize: {value: 8 * renderer.getPixelRatio()}
+            uSize: {value: 30 * renderer.getPixelRatio()}
         }
     })
 
