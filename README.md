@@ -42,3 +42,4 @@ lesson 28. Shader patterns: https://delilah07.github.io/threejs-journey-course/l
 lesson 29. Raging sea: https://delilah07.github.io/threejs-journey-course/lesson-29/dist/ \
 lesson 30. Animated galaxy: https://delilah07.github.io/threejs-journey-course/lesson-30/dist/ \
 lesson 31. Modified materials: https://delilah07.github.io/threejs-journey-course/lesson-31/dist/ \
+lesson 32. Coffee Smoke: https://delilah07.github.io/threejs-journey-course/lesson-32/dist/ \
