@@ -43,3 +43,4 @@ lesson 29. Raging sea: https://delilah07.github.io/threejs-journey-course/lesson
 lesson 30. Animated galaxy: https://delilah07.github.io/threejs-journey-course/lesson-30/dist/ \
 lesson 31. Modified materials: https://delilah07.github.io/threejs-journey-course/lesson-31/dist/ \
 lesson 32. Coffee Smoke: https://delilah07.github.io/threejs-journey-course/lesson-32/dist/ \
+lesson 33. Hologram: https://delilah07.github.io/threejs-journey-course/lesson-33/dist/ \
