@@ -1,6 +1,8 @@
-import * as THREE from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import GUI from 'lil-gui'
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import GUI from 'lil-gui';
+import fireworkVertexShader from './shaders/firework/vertex.glsl';
+import fireworkFragmentShader from './shaders/firework/fragment.glsl';
 
 // Base
 // Debug
@@ -55,7 +57,7 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // Fireworks
-const createFireworks = (count, position) => {
+const createFireworks = (count, position, size) => {
     // Position
     const positionsArray = new Float32Array(count * 3);
 
@@ -73,14 +75,21 @@ const createFireworks = (count, position) => {
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionsArray, 3));
 
     // Material
-     const material = new THREE.PointsMaterial();
+     const material = new THREE.ShaderMaterial({
+        vertexShader: fireworkVertexShader,
+        fragmentShader: fireworkFragmentShader,
+        uniforms: {
+            uSize: new THREE.Uniform(size),
+        }
+
+     });
 
     // Points
     const firework = new THREE.Points(geometry, material);
     firework.position.copy(position)
     scene.add(firework);
 };
-createFireworks(100, new THREE.Vector3());
+createFireworks(100, new THREE.Vector3(), 50);
 
 // Animate
 const tick = () =>
