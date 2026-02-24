@@ -20,14 +20,24 @@ const textureLoader = new THREE.TextureLoader()
 // Sizes
 const sizes = {
     width: window.innerWidth,
-    height: window.innerHeight
-}
+    height: window.innerHeight, 
+    pixelRatio: Math.min(window.devicePixelRatio, 2)
+};
+sizes.resolution = new THREE.Vector2(
+    sizes.width * sizes.pixelRatio, 
+    sizes.height * sizes.pixelRatio
+);
 
 window.addEventListener('resize', () =>
 {
     // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
+    sizes.pixelRatio = Math.min(window.devicePixelRatio, 2);
+    sizes.resolution.set(
+        sizes.width * sizes.pixelRatio, 
+        sizes.height * sizes.pixelRatio
+    );
 
     // Update camera
     camera.aspect = sizes.width / sizes.height
@@ -80,6 +90,7 @@ const createFireworks = (count, position, size) => {
         fragmentShader: fireworkFragmentShader,
         uniforms: {
             uSize: new THREE.Uniform(size),
+            uResolution: new THREE.Uniform(sizes.resolution),
         }
 
      });
@@ -89,7 +100,11 @@ const createFireworks = (count, position, size) => {
     firework.position.copy(position)
     scene.add(firework);
 };
-createFireworks(100, new THREE.Vector3(), 50);
+createFireworks(
+    100, // count
+    new THREE.Vector3(), // position
+    0.5 // size
+);
 
 // Animate
 const tick = () =>
