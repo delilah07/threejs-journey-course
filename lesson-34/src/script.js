@@ -66,33 +66,65 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+// Textures
+const textures = [
+    textureLoader.load('./particles/1.png'),
+    textureLoader.load('./particles/2.png'),
+    textureLoader.load('./particles/3.png'),
+    textureLoader.load('./particles/4.png'),
+    textureLoader.load('./particles/5.png'),
+    textureLoader.load('./particles/6.png'),
+    textureLoader.load('./particles/7.png'),
+    textureLoader.load('./particles/8.png'),
+]
+
 // Fireworks
-const createFireworks = (count, position, size) => {
+const createFireworks = (count, position, size, texture, radius, color) => {
     // Position
     const positionsArray = new Float32Array(count * 3);
 
+    // Random sizes
+    const sizesArray = new Float32Array(count);
+
     for(let i = 0; i < count; i++)
     {
-        const i3 = i * 3
+        const i3 = i * 3;
 
-        positionsArray[i3    ] = Math.random() - 0.5
-        positionsArray[i3 + 1] = Math.random() - 0.5
-        positionsArray[i3 + 2] = Math.random() - 0.5
+        const spherical = new THREE.Spherical(
+            radius * (0.75 + Math.random() * 0.25),
+            Math.random() * Math.PI,
+            Math.random() * Math.PI * 2
+        )
+
+        const position = new THREE.Vector3();
+        position.setFromSpherical(spherical);
+
+        positionsArray[i3    ] = position.x;
+        positionsArray[i3 + 1] = position.y;
+        positionsArray[i3 + 2] = position.z;
+
+        sizesArray[i] = Math.random();
     }
 
     // Geometry
     const geometry = new THREE.BufferGeometry()
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionsArray, 3));
+    geometry.setAttribute('aSize', new THREE.Float32BufferAttribute(sizesArray, 1));
 
     // Material
-     const material = new THREE.ShaderMaterial({
+    texture.flipY = false;
+    const material = new THREE.ShaderMaterial({
         vertexShader: fireworkVertexShader,
         fragmentShader: fireworkFragmentShader,
         uniforms: {
             uSize: new THREE.Uniform(size),
             uResolution: new THREE.Uniform(sizes.resolution),
-        }
-
+            uTexture: new THREE.Uniform(texture),
+            uColor: new THREE.Uniform(color)
+        },
+        depthWrite: false,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
      });
 
     // Points
@@ -101,9 +133,12 @@ const createFireworks = (count, position, size) => {
     scene.add(firework);
 };
 createFireworks(
-    100, // count
-    new THREE.Vector3(), // position
-    0.5 // size
+    100,                            // count
+    new THREE.Vector3(),            // position
+    0.5,                            // size
+    textures[7],                    // texture
+    1,                              // radius
+    new THREE.Color('#8affff')    // color
 );
 
 // Animate
