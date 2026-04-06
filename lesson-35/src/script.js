@@ -129,13 +129,21 @@ directionalLightHelper.position.set(0, 0, 3);
 scene.add(directionalLightHelper);
 
 // Point light helper
-const pointLightHelper = new THREE.Mesh(
+const pointLightHelperRed = new THREE.Mesh(
     new THREE.IcosahedronGeometry(0.1, 2),
     new THREE.MeshBasicMaterial()
 );
-pointLightHelper.material.color.setRGB(1.0, 0.1, 0.1);
-pointLightHelper.position.set(0, 2.5, 0);
-scene.add(pointLightHelper);
+pointLightHelperRed.material.color.setRGB(1.0, 0.1, 0.1);
+pointLightHelperRed.position.set(0, 2.5, 0);
+scene.add(pointLightHelperRed);
+
+const pointLightHelperGreen = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(0.1, 2),
+    new THREE.MeshBasicMaterial()
+);
+pointLightHelperGreen.material.color.setRGB(0.1, 1.0, 0.1);
+pointLightHelperGreen.position.set(1, -1.5, 1);
+scene.add(pointLightHelperGreen);
 
 // Animate
 const clock = new THREE.Clock()
