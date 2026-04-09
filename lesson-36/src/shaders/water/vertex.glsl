@@ -9,6 +9,8 @@ uniform float uSmallWavesSpeed;
 uniform float uSmallIterations;
 
 varying float vElevation;
+varying vec3 vNormal;
+varying vec3 vPosition;
 
 #include ../includes/pearlinClassic3D.glsl
 
@@ -29,7 +31,6 @@ void main()
     
     modelPosition.y += elevation;
 
-
     // Final position
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix * viewPosition;
@@ -37,4 +38,6 @@ void main()
 
     // Varyings
     vElevation = elevation;
+    vNormal = (modelMatrix * vec4(normal, 0.0)).xyz;
+    vPosition = modelPosition.xyz;
 }

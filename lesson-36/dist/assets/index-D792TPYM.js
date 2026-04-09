@@ -4266,6 +4266,8 @@ uniform float uSmallWavesSpeed;
 uniform float uSmallIterations;
 
 varying float vElevation;
+varying vec3 vNormal;
+varying vec3 vPosition;
 
 vec4 permute(vec4 x)\r
 {\r
@@ -4373,23 +4375,61 @@ void main()
 
     
     vElevation = elevation;
+    vNormal = (modelMatrix * vec4(normal, 0.0)).xyz;
+    vPosition = modelPosition.xyz;
 }`,Lp=`uniform vec3 uDepthColor;
 uniform vec3 uSurfaceColor;
 uniform float uColorOffset;
 uniform float uColorMultiplier;
 
 varying float vElevation;
+varying vec3 vNormal;
+varying vec3 vPosition;
+
+vec3 directionalLight(vec3 lightColor, float lightIntensity, vec3 normal, vec3 lightPosition, vec3 viewDirection, float specularPower){\r
+    vec3 lightDirection = normalize(lightPosition);
+
+    vec3 lightReflection = reflect(- lightDirection, normal);
+
+    
+    float shading = dot(normal, lightDirection);\r
+    shading = max(0.0, shading);
+
+    
+    float specular = - dot(lightReflection, viewDirection);\r
+    specular = max(0.0, specular);\r
+    specular = pow(specular, specularPower);
+
+    return lightColor * lightIntensity * (shading + specular);\r
+}
 
 void main()
 {
+    vec3 normal = normalize(vNormal);
+    vec3 viewDirection = normalize(vPosition - cameraPosition);
+
+    
+    vec3 light = vec3(0.0);
+
+    light += directionalLight(
+        vec3(1.0),
+        1.0,
+        normal,
+        vec3(-1.0, 0.5, 0.0),
+        viewDirection,
+        30.0
+    );
+
     
     float mixStrength = (vElevation + uColorOffset) * uColorMultiplier;
     
     vec3 color = mix(uDepthColor, uSurfaceColor, mixStrength);
+
+    color *= light;
     
     
     gl_FragColor = vec4(color, 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
 }`;const Ie=new Ks({width:340}),Sn={},Bo=document.querySelector("canvas.webgl"),Zs=new dc,Up=new Li(2,2,512,512);Sn.depthColor="#ff4000";Sn.surfaceColor="#151c37";Ie.addColor(Sn,"depthColor").onChange(()=>{ye.uniforms.uDepthColor.value.set(Sn.depthColor)});Ie.addColor(Sn,"surfaceColor").onChange(()=>{ye.uniforms.uSurfaceColor.value.set(Sn.surfaceColor)});const ye=new cn({vertexShader:Dp,fragmentShader:Lp,uniforms:{uTime:{value:0},uBigWavesElevation:{value:.2},uBigWavesFrequency:{value:new Lt(4,1.5)},uBigWavesSpeed:{value:.75},uSmallWavesElevation:{value:.15},uSmallWavesFrequency:{value:3},uSmallWavesSpeed:{value:.2},uSmallIterations:{value:4},uDepthColor:{value:new Yt(Sn.depthColor)},uSurfaceColor:{value:new Yt(Sn.surfaceColor)},uColorOffset:{value:.925},uColorMultiplier:{value:1}}});Ie.add(ye.uniforms.uBigWavesElevation,"value").min(0).max(1).step(.001).name("uBigWavesElevation");Ie.add(ye.uniforms.uBigWavesFrequency.value,"x").min(0).max(10).step(.001).name("uBigWavesFrequencyX");Ie.add(ye.uniforms.uBigWavesFrequency.value,"y").min(0).max(10).step(.001).name("uBigWavesFrequencyY");Ie.add(ye.uniforms.uBigWavesSpeed,"value").min(0).max(4).step(.001).name("uBigWavesSpeed");Ie.add(ye.uniforms.uSmallWavesElevation,"value").min(0).max(1).step(.001).name("uSmallWavesElevation");Ie.add(ye.uniforms.uSmallWavesFrequency,"value").min(0).max(30).step(.001).name("uSmallWavesFrequency");Ie.add(ye.uniforms.uSmallWavesSpeed,"value").min(0).max(4).step(.001).name("uSmallWavesSpeed");Ie.add(ye.uniforms.uSmallIterations,"value").min(0).max(5).step(1).name("uSmallIterations");Ie.add(ye.uniforms.uColorOffset,"value").min(0).max(1).step(.001).name("uColorOffset");Ie.add(ye.uniforms.uColorMultiplier,"value").min(0).max(10).step(.001).name("uColorMultiplier");const zo=new Ye(Up,ye);zo.rotation.x=-Math.PI*.5;Zs.add(zo);const We={width:window.innerWidth,height:window.innerHeight};window.addEventListener("resize",()=>{We.width=window.innerWidth,We.height=window.innerHeight,_i.aspect=We.width/We.height,_i.updateProjectionMatrix(),wi.setSize(We.width,We.height),wi.setPixelRatio(Math.min(window.devicePixelRatio,2))});const _i=new Ue(75,We.width/We.height,.1,100);_i.position.set(1,1,1);Zs.add(_i);const Ho=new ap(_i,Bo);Ho.enableDamping=!0;const wi=new rp({canvas:Bo});wi.setSize(We.width,We.height);wi.setPixelRatio(Math.min(window.devicePixelRatio,2));const Ip=new xc,Vo=()=>{const i=Ip.getElapsedTime();ye.uniforms.uTime.value=i,Ho.update(),wi.render(Zs,_i),window.requestAnimationFrame(Vo)};Vo();
-//# sourceMappingURL=index-DCDMbLX-.js.map
+//# sourceMappingURL=index-D792TPYM.js.map
