@@ -46,3 +46,4 @@ lesson 32. Coffee Smoke: https://delilah07.github.io/threejs-journey-course/less
 lesson 33. Hologram: https://delilah07.github.io/threejs-journey-course/lesson-33/dist/ \
 lesson 34. Fireworks: https://delilah07.github.io/threejs-journey-course/lesson-34/dist/ \
 lesson 35. Lights Shading: https://delilah07.github.io/threejs-journey-course/lesson-35/dist/ \
+lesson 36. Raging Sea Shading: https://delilah07.github.io/threejs-journey-course/lesson-36/dist/ \
