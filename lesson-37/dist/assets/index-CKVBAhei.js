@@ -4344,14 +4344,31 @@ void main()
     color *= light;
 
     
-    float repetitions = 10.0; 
+    float repetitions = 50.0; 
+
+    vec3 direction = vec3(0.0, - 1.0, 0.0); 
+
+    float low = -0.8; 
+    float high = 1.5; 
+
+    vec3 pointColor = vec3(1.0, 0.0,0.0); 
+
+    float intensity = dot(normal, direction); 
+    intensity = smoothstep(low, high, intensity); 
+
     vec2 uv = gl_FragCoord.xy / uResolution.y;
     uv *= repetitions; 
     uv = mod(uv, 1.0);
 
     
-    gl_FragColor = vec4(uv, 1.0, 1.0);
+    float point = distance(uv, vec2(0.5));
+    point = 1.0 - step(0.5 * intensity, point); 
+
+    color = mix(color, pointColor, point); 
+
+    
+    gl_FragColor = vec4(color, 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
 }`;const Bc=new ma,zc=document.querySelector("canvas.webgl"),_s=new wu,fx=new P_,ht={width:window.innerWidth,height:window.innerHeight,pixelRatio:Math.min(window.devicePixelRatio,2)};window.addEventListener("resize",()=>{ht.width=window.innerWidth,ht.height=window.innerHeight,ht.pixelRatio=Math.min(window.devicePixelRatio,2),xs.uniforms.uResolution.value.set(ht.width*ht.pixelRatio,ht.height*ht.pixelRatio),kn.aspect=ht.width/ht.height,kn.updateProjectionMatrix(),si.setSize(ht.width,ht.height),si.setPixelRatio(ht.pixelRatio)});const kn=new At(25,ht.width/ht.height,.1,100);kn.position.x=7;kn.position.y=7;kn.position.z=7;_s.add(kn);const kc=new r_(kn,zc);kc.enableDamping=!0;const ar={};ar.clearColor="#26132f";const si=new i_({canvas:zc,antialias:!0});si.setClearColor(ar.clearColor);si.setSize(ht.width,ht.height);si.setPixelRatio(ht.pixelRatio);Bc.addColor(ar,"clearColor").onChange(()=>{si.setClearColor(ar.clearColor)});const ds={};ds.color="#ff794d";const xs=new bn({vertexShader:ux,fragmentShader:dx,uniforms:{uColor:new os(new Re(ds.color)),uShadeColor:new os(new Re(ds.shadeColor)),uResolution:new os(new be(ht.width*ht.pixelRatio,ht.height*ht.pixelRatio))}});Bc.addColor(ds,"color").onChange(()=>{xs.uniforms.uColor.value.set(ds.color)});const lr=new wt(new oa(.6,.25,128,32),xs);lr.position.x=3;_s.add(lr);const cr=new wt(new ra,xs);cr.position.x=-3;_s.add(cr);let Ci=null;fx.load("./suzanne.glb",s=>{Ci=s.scene,Ci.traverse(e=>{e.isMesh&&(e.material=xs)}),_s.add(Ci)});const px=new cd,Hc=()=>{const s=px.getElapsedTime();Ci&&(Ci.rotation.x=-s*.1,Ci.rotation.y=s*.2),cr.rotation.x=-s*.1,cr.rotation.y=s*.2,lr.rotation.x=-s*.1,lr.rotation.y=s*.2,kc.update(),si.render(_s,kn),window.requestAnimationFrame(Hc)};Hc();
-//# sourceMappingURL=index-DCUjOA-3.js.map
+//# sourceMappingURL=index-CKVBAhei.js.map
