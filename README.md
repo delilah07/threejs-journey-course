@@ -22,7 +22,7 @@ lesson 15. Shadows: https://delilah07.github.io/threejs-journey-course/lesson-15
 lesson 16. Haunted House: https://delilah07.github.io/threejs-journey-course/lesson-16/dist/ \
 lesson 17. Particles: https://delilah07.github.io/threejs-journey-course/lesson-17/dist/ \
 lesson 18. Galaxy Generator: https://delilah07.github.io/threejs-journey-course/lesson-18/dist/ \
-lesson 19. Website with parallax scroll: https://delilah07.github.io/threejs-journey-course/lesson-19/dist/ 
+lesson 19. Website with parallax scroll: https://delilah07.github.io/threejs-journey-course/lesson-19/dist/
 
 Chapter 03. Advanced techniques: 7 lessons \
 \
@@ -47,3 +47,4 @@ lesson 33. Hologram: https://delilah07.github.io/threejs-journey-course/lesson-3
 lesson 34. Fireworks: https://delilah07.github.io/threejs-journey-course/lesson-34/dist/ \
 lesson 35. Lights Shading: https://delilah07.github.io/threejs-journey-course/lesson-35/dist/ \
 lesson 36. Raging Sea Shading: https://delilah07.github.io/threejs-journey-course/lesson-36/dist/ \
+lesson 37. Halftone Shading: https://delilah07.github.io/threejs-journey-course/lesson-37/dist/ \
