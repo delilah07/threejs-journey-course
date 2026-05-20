@@ -1,5 +1,9 @@
 uniform vec3 uColor;
 uniform vec2 uResolution;
+uniform float uShadowRepetitions;
+uniform vec3 uShadowColor;
+uniform float uLightRepetitions;
+uniform vec3 uLightColor;
 
 varying vec3 vNormal;
 varying vec3 vPosition;
@@ -57,16 +61,22 @@ void main()
     color *= light;
 
     // Halftone
-    float repetitions = 50.0; // how many sells we want
+    float shadowRepetitions = uShadowRepetitions; // how many sells we want
+    float lightRepetitions = uLightRepetitions; // how many sells we want
 
-    vec3 direction = vec3(0.0, - 1.0, 0.0); // direction of the grid
+    vec3 shadowDirection = vec3(0.0, - 1.0, 0.0); // direction of the grid
+    vec3 lightDirection = vec3(1.0, 1.0, 0.0); // direction of the grid
 
-    float low = -0.8; // how much the grid is visible when the normal is facing the opposite direction;
-    float high = 1.5; // how much the grid is visible when the normal is facing the direction;
+    float shadowLow = -0.8; // how much the grid is visible when the normal is facing the opposite direction;
+    float lightLow = 0.5; // how much the grid is visible when the normal is facing the opposite direction;
+    float shadowHigh = 1.5; // how much the grid is visible when the normal is facing the direction;
+    float lightHigh = 1.3; // how much the grid is visible when the normal is facing the direction;
 
-    vec3 pointColor = vec3(1.0, 0.0,0.0); // color of the grid points
+    vec3 shadowPointColor = uShadowColor; // color of the grid points
+    vec3 lightPointColor = uLightColor; // color of the grid points
 
-    color = halfToneFunction(color, repetitions, direction, low, high, pointColor, normal);
+    color = halfToneFunction(color, shadowRepetitions, shadowDirection, shadowLow, shadowHigh, shadowPointColor, normal);
+    color += halfToneFunction(color, lightRepetitions, lightDirection, lightLow, lightHigh, lightPointColor, normal);
 
     // Final color
     gl_FragColor = vec4(color, 1.0);
