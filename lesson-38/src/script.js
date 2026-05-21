@@ -38,10 +38,41 @@ const earthMaterial = new THREE.ShaderMaterial({
     uDayTexture: new THREE.Uniform(earthDayTexture),
     uNightTexture: new THREE.Uniform(earthNightTexture),
     uSpecularCloudsTexture: new THREE.Uniform(earthSpecularCloudsTexture),
+    uSunDirection: new THREE.Uniform(new THREE.Vector3(0, 0, 1)),
   },
 });
 const earth = new THREE.Mesh(earthGeometry, earthMaterial);
 scene.add(earth);
+
+// Sun
+const sunSpherical = new THREE.Spherical(1, Math.PI / 2, 0.5);
+const sunDirection = new THREE.Vector3();
+
+// Debug
+const debugSun = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(0.1, 2),
+  new THREE.MeshBasicMaterial(),
+);
+
+scene.add(debugSun);
+
+// Update sun direction, uniform and debug sun position
+const updateSun = () => {
+  // Update sun direction
+  sunDirection.setFromSpherical(sunSpherical);
+
+  // Update debug sun position
+  debugSun.position.copy(sunDirection).multiplyScalar(5);
+
+  // Update uniform
+  earthMaterial.uniforms.uSunDirection.value.copy(sunDirection);
+};
+
+updateSun();
+
+// GUI
+gui.add(sunSpherical, 'phi').min(0).max(Math.PI).onChange(updateSun);
+gui.add(sunSpherical, 'theta').min(-Math.PI).max(Math.PI).onChange(updateSun);
 
 // Sizes
 const sizes = {
