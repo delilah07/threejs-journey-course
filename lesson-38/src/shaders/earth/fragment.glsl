@@ -17,7 +17,6 @@ void main()
     vec3 color = vec3(0.0);
 
     // Sun direction
-    vec3 uSunDirection = uSunDirection;
     float sunOrientation = dot(uSunDirection, normal);
     // color = vec3(sunOrientation);
 
@@ -44,6 +43,16 @@ void main()
     vec3 atmosphereColor = mix(uAtmosphereTwilightColor, uAtmosphereDayColor, atmosphereDayMix);
 
     color = mix(color, atmosphereColor, fresnel * atmosphereDayMix);
+
+    // Specular of sun
+    vec3 reflection = reflect(-uSunDirection, normal);
+    float specular = - dot(reflection, viewDirection);
+    specular = max(specular, 0.0);
+    specular = pow(specular, 32.0);
+    specular *= specularCloudsColor.r; // Only show specular where there are clouds
+
+    vec3 specularColor = mix(vec3(1.0), atmosphereColor, fresnel);
+    color += specularColor * specular;
 
     // Final color
     gl_FragColor = vec4(color, 1.0);
