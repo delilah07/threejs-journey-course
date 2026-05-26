@@ -5,7 +5,10 @@ varying vec3 vPosition;
 uniform sampler2D uDayTexture;
 uniform sampler2D uNightTexture;
 uniform sampler2D uSpecularCloudsTexture;
+uniform float uSpecularCloudsNumber;
 uniform vec3 uSunDirection;
+uniform vec3 uAtmosphereDayColor;
+uniform vec3 uAtmosphereTwilightColor;
 
 void main()
 {
@@ -28,9 +31,19 @@ void main()
     vec2 specularCloudsColor = texture(uSpecularCloudsTexture, vUv).rg;
     
     // Clouds
-    float cloudsMix = smoothstep(0.3, 1.0, specularCloudsColor.g);
+    float cloudsMix = smoothstep(uSpecularCloudsNumber, 1.0, specularCloudsColor.g);
     cloudsMix *= dayMix; // Only show clouds on the day side
     color = mix(color, vec3(1.0), cloudsMix);
+
+    // Fresnel effect
+    float fresnel = dot(viewDirection, normal) + 1.0;
+    fresnel = pow(fresnel, 2.0);
+
+    // Atmosphere
+    float atmosphereDayMix = smoothstep(-0.5, 0.25, sunOrientation);  
+    vec3 atmosphereColor = mix(uAtmosphereTwilightColor, uAtmosphereDayColor, atmosphereDayMix);
+
+    color = mix(color, atmosphereColor, fresnel * atmosphereDayMix);
 
     // Final color
     gl_FragColor = vec4(color, 1.0);

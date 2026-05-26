@@ -18,6 +18,12 @@ const scene = new THREE.Scene();
 const textureLoader = new THREE.TextureLoader();
 
 // Earth
+// Gradient
+const earthParameters = {
+  atmosphereDayColor: '#00aaff',
+  atmosphereTwilightColor: '#ff6600',
+};
+
 // Textures
 const earthDayTexture = textureLoader.load('./earth/day.jpg');
 earthDayTexture.colorSpace = THREE.SRGBColorSpace;
@@ -32,6 +38,10 @@ const earthSpecularCloudsTexture = textureLoader.load(
 );
 earthSpecularCloudsTexture.anisotropy = 8;
 
+const earthSpecularClouds = {
+  numberOfTransparency: 0.3,
+};
+
 // Mesh
 const earthGeometry = new THREE.SphereGeometry(2, 64, 64);
 const earthMaterial = new THREE.ShaderMaterial({
@@ -41,7 +51,16 @@ const earthMaterial = new THREE.ShaderMaterial({
     uDayTexture: new THREE.Uniform(earthDayTexture),
     uNightTexture: new THREE.Uniform(earthNightTexture),
     uSpecularCloudsTexture: new THREE.Uniform(earthSpecularCloudsTexture),
+    uSpecularCloudsNumber: new THREE.Uniform(
+      earthSpecularClouds.numberOfTransparency,
+    ),
     uSunDirection: new THREE.Uniform(new THREE.Vector3(0, 0, 1)),
+    uAtmosphereDayColor: new THREE.Uniform(
+      new THREE.Color(earthParameters.atmosphereDayColor),
+    ),
+    uAtmosphereTwilightColor: new THREE.Uniform(
+      new THREE.Color(earthParameters.atmosphereTwilightColor),
+    ),
   },
 });
 const earth = new THREE.Mesh(earthGeometry, earthMaterial);
@@ -76,6 +95,25 @@ updateSun();
 // GUI
 gui.add(sunSpherical, 'phi').min(0).max(Math.PI).onChange(updateSun);
 gui.add(sunSpherical, 'theta').min(-Math.PI).max(Math.PI).onChange(updateSun);
+gui
+  .add(earthSpecularClouds, 'numberOfTransparency')
+  .name('specular clouds transparency')
+  .min(0)
+  .max(1)
+  .step(0.01)
+  .onChange((value) => {
+    earthMaterial.uniforms.uSpecularCloudsNumber.value = value;
+  });
+gui.addColor(earthParameters, 'atmosphereDayColor').onChange(() => {
+  earthMaterial.uniforms.uAtmosphereDayColor.value.set(
+    earthParameters.atmosphereDayColor,
+  );
+});
+gui.addColor(earthParameters, 'atmosphereTwilightColor').onChange(() => {
+  earthMaterial.uniforms.uAtmosphereTwilightColor.value.set(
+    earthParameters.atmosphereTwilightColor,
+  );
+});
 
 // Sizes
 const sizes = {
