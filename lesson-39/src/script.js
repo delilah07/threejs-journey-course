@@ -2,8 +2,12 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import particlesVertexShader from './shaders/particles/vertex.glsl';
 import particlesFragmentShader from './shaders/particles/fragment.glsl';
+import GUI from 'lil-gui';
 
 // Base
+// Debug
+const gui = new GUI();
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
 
@@ -65,8 +69,46 @@ renderer.setClearColor('#181818');
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(sizes.pixelRatio);
 
+// Displacement
+const displacement = {};
+
+// 2D canvas
+displacement.canvas = document.createElement('canvas');
+displacement.canvas.width = 128;
+displacement.canvas.height = 128;
+displacement.canvas.style.position = 'fixed';
+displacement.canvas.style.width = '512px';
+displacement.canvas.style.height = '512px';
+displacement.canvas.style.top = '0';
+displacement.canvas.style.left = '0';
+displacement.canvas.style.zIndex = '10';
+
+document.body.append(displacement.canvas);
+
+// Context
+displacement.context = displacement.canvas.getContext('2d');
+displacement.context.fillRect(
+  0,
+  0,
+  displacement.canvas.width,
+  displacement.canvas.height,
+);
+
+// Glow image
+displacement.glowImage = new Image();
+displacement.glowImage.src = './glow.png';
+// window.setTimeout(() => {
+//   displacement.context.drawImage(displacement.glowImage, 20, 20, 32, 32);
+// }, 1000);
+
 // Particles
 const particlesGeometry = new THREE.PlaneGeometry(10, 10, 128, 128);
+
+const textures = {
+  'Picture 1': textureLoader.load('./picture-1.png'),
+  'Picture 2': textureLoader.load('./picture-2.png'),
+  'Picture 3': textureLoader.load('./picture-3.png'),
+};
 
 const particlesMaterial = new THREE.ShaderMaterial({
   vertexShader: particlesVertexShader,
@@ -78,11 +120,22 @@ const particlesMaterial = new THREE.ShaderMaterial({
         sizes.height * sizes.pixelRatio,
       ),
     ),
-    uPictureTexture: new THREE.Uniform(textureLoader.load('./picture-1.png')),
+    uPictureTexture: new THREE.Uniform(textures['Picture 1']),
   },
 });
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
 scene.add(particles);
+
+const debugObject = {
+  currentTexture: 'Picture 1',
+};
+
+gui
+  .add(debugObject, 'currentTexture', Object.keys(textures))
+  .name('Texture')
+  .onChange((value) => {
+    particlesMaterial.uniforms.uPictureTexture.value = textures[value];
+  });
 
 // Animate
 const tick = () => {
