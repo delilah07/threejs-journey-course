@@ -106,6 +106,7 @@ displacement.interactivePlane = new THREE.Mesh(
   new THREE.PlaneGeometry(10, 10),
   new THREE.MeshBasicMaterial({
     color: 'red',
+    side: THREE.DoubleSide,
   }),
 );
 displacement.interactivePlane.visible = false;
@@ -117,18 +118,46 @@ displacement.raycaster = new THREE.Raycaster();
 // Coordinates
 displacement.screenCursor = new THREE.Vector2(9999, 9999);
 displacement.canvasCursor = new THREE.Vector2(9999, 9999);
+displacement.canvasCursorPrev = new THREE.Vector2(9999, 9999);
+
 window.addEventListener('pointermove', (event) => {
   displacement.screenCursor.x = (event.clientX / sizes.width) * 2 - 1;
   displacement.screenCursor.y = -(event.clientY / sizes.height) * 2 + 1;
 });
 
+// Textures
+displacement.textures = new THREE.CanvasTexture(displacement.canvas);
+
 // Particles
 const particlesGeometry = new THREE.PlaneGeometry(10, 10, 128, 128);
+particlesGeometry.setIndex(null);
+particlesGeometry.deleteAttribute('normal');
+
+const intensitiesArray = new Float32Array(
+  particlesGeometry.attributes.position.count,
+);
+const angleArray = new Float32Array(
+  particlesGeometry.attributes.position.count,
+);
+for (let i = 0; i < particlesGeometry.attributes.position.count; i++) {
+  intensitiesArray[i] = Math.random();
+  angleArray[i] = Math.random() * Math.PI * 2;
+}
+particlesGeometry.setAttribute(
+  'aIntensity',
+  new THREE.BufferAttribute(intensitiesArray, 1),
+);
+particlesGeometry.setAttribute(
+  'aAngle',
+  new THREE.BufferAttribute(angleArray, 1),
+);
 
 const textures = {
-  'Picture 1': textureLoader.load('./picture-1.png'),
-  'Picture 2': textureLoader.load('./picture-2.png'),
-  'Picture 3': textureLoader.load('./picture-3.png'),
+  'Picture 1': textureLoader.load('./picture.png'),
+  'Picture 2': textureLoader.load('./picture-1.png'),
+  'Picture 3': textureLoader.load('./picture-2.png'),
+  'Picture 4': textureLoader.load('./picture-3.png'),
+  'Picture 5': textureLoader.load('./picture-4.png'),
 };
 
 const particlesMaterial = new THREE.ShaderMaterial({
@@ -142,7 +171,9 @@ const particlesMaterial = new THREE.ShaderMaterial({
       ),
     ),
     uPictureTexture: new THREE.Uniform(textures['Picture 1']),
+    uDisplacementTexture: new THREE.Uniform(displacement.textures),
   },
+  // blending: THREE.AdditiveBlending,
 });
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
 scene.add(particles);
@@ -187,10 +218,17 @@ const tick = () => {
     displacement.canvas.height,
   );
 
+  // Speed alpha
+  const cursorDisplacement = displacement.canvasCursorPrev.distanceTo(
+    displacement.canvasCursor,
+  );
+  displacement.canvasCursorPrev.copy(displacement.canvasCursor);
+  const alpha = Math.min(cursorDisplacement * 0.1, 1);
+
   // Draw glow
   const glowSize = displacement.canvas.width * 0.25;
   displacement.context.globalCompositeOperation = 'lighten';
-  displacement.context.globalAlpha = 1;
+  displacement.context.globalAlpha = alpha;
   displacement.context.drawImage(
     displacement.glowImage,
     displacement.canvasCursor.x - glowSize / 2,
@@ -198,6 +236,9 @@ const tick = () => {
     glowSize,
     glowSize,
   );
+
+  // Texture
+  displacement.textures.needsUpdate = true;
 
   // Render
   renderer.render(scene, camera);
