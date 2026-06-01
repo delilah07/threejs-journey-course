@@ -50,3 +50,4 @@ lesson 36. Raging Sea Shading: https://delilah07.github.io/threejs-journey-cours
 lesson 37. Halftone Shading: https://delilah07.github.io/threejs-journey-course/lesson-37/dist/ \
 lesson 38. Earth: https://delilah07.github.io/threejs-journey-course/lesson-38/dist/ \
 lesson 39. Particles Cursor Animation: https://delilah07.github.io/threejs-journey-course/lesson-39/dist/ \
+lesson 40. Particles Morphing: https://delilah07.github.io/threejs-journey-course/lesson-40/dist/ \
