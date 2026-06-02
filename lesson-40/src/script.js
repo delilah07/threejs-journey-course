@@ -89,6 +89,7 @@ let particles = null;
 // Load model
 gltfLoader.load('./models.glb', (gltf) => {
   particles = {};
+  particles.index = 0;
 
   // Positions
   const positions = gltf.scene.children.map(
@@ -128,7 +129,10 @@ gltfLoader.load('./models.glb', (gltf) => {
 
   // Geometry
   particles.geometry = new THREE.BufferGeometry();
-  particles.geometry.setAttribute('position', particles.positions[1]);
+  particles.geometry.setAttribute(
+    'position',
+    particles.positions[particles.index],
+  );
   particles.geometry.setAttribute('aPositionTarget', particles.positions[3]);
 
   // Material
@@ -153,13 +157,42 @@ gltfLoader.load('./models.glb', (gltf) => {
   particles.points = new THREE.Points(particles.geometry, particles.material);
   scene.add(particles.points);
 
+  // Methods
+  particles.morth = (index) => {
+    // Update attributes
+    particles.geometry.attributes.position =
+      particles.positions[particles.index];
+    particles.geometry.attributes.aPositionTarget = particles.positions[index];
+
+    // Animate uProgress
+    gsap.fromTo(
+      particles.material.uniforms.uProgress,
+      { value: 0 },
+      { value: 1, duration: 3, ease: 'linear' },
+    );
+
+    // Save index
+    particles.index = index;
+  };
+
+  particles.morth0 = () => particles.morth(0);
+  particles.morth1 = () => particles.morth(1);
+  particles.morth2 = () => particles.morth(2);
+  particles.morth3 = () => particles.morth(3);
+
   // Tweaks
   gui
     .add(particles.material.uniforms.uProgress, 'value')
     .min(0)
     .max(1)
     .step(0.001)
-    .name('uProgress');
+    .name('uProgress')
+    .listen();
+
+  gui.add(particles, 'morth0');
+  gui.add(particles, 'morth1');
+  gui.add(particles, 'morth2');
+  gui.add(particles, 'morth3');
 });
 
 // Animate
