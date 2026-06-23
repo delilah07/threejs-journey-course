@@ -52,3 +52,4 @@ lesson 38. Earth: https://delilah07.github.io/threejs-journey-course/lesson-38/d
 lesson 39. Particles Cursor Animation: https://delilah07.github.io/threejs-journey-course/lesson-39/dist/ \
 lesson 40. Particles Morphing: https://delilah07.github.io/threejs-journey-course/lesson-40/dist/ \
 lesson 41. GPGPU Flow Field Particles: https://delilah07.github.io/threejs-journey-course/lesson-41/dist/ \
+lesson 42. Wobbly Sphere: https://delilah07.github.io/threejs-journey-course/lesson-42/dist/ \

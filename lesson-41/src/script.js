@@ -21,7 +21,7 @@ const scene = new THREE.Scene();
 
 // Loaders
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath('/draco/');
+dracoLoader.setDecoderPath('./draco/');
 
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
@@ -32,27 +32,6 @@ const sizes = {
   height: window.innerHeight,
   pixelRatio: Math.min(window.devicePixelRatio, 2),
 };
-
-window.addEventListener('resize', () => {
-  // Update sizes
-  sizes.width = window.innerWidth;
-  sizes.height = window.innerHeight;
-  sizes.pixelRatio = Math.min(window.devicePixelRatio, 2);
-
-  // Materials
-  particles.material.uniforms.uResolution.value.set(
-    sizes.width * sizes.pixelRatio,
-    sizes.height * sizes.pixelRatio,
-  );
-
-  // Update camera
-  camera.aspect = sizes.width / sizes.height;
-  camera.updateProjectionMatrix();
-
-  // Update renderer
-  renderer.setSize(sizes.width, sizes.height);
-  renderer.setPixelRatio(sizes.pixelRatio);
-});
 
 // Camera
 // Base camera
@@ -247,6 +226,27 @@ gui
 // Animate
 const clock = new THREE.Clock();
 let previousTime = 0;
+
+window.addEventListener('resize', () => {
+  // Update sizes
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+  sizes.pixelRatio = Math.min(window.devicePixelRatio, 2);
+
+  // Materials
+  particles.material.uniforms.uResolution.value.set(
+    sizes.width * sizes.pixelRatio,
+    sizes.height * sizes.pixelRatio,
+  );
+
+  // Update camera
+  camera.aspect = sizes.width / sizes.height;
+  camera.updateProjectionMatrix();
+
+  // Update renderer
+  renderer.setSize(sizes.width, sizes.height);
+  renderer.setPixelRatio(sizes.pixelRatio);
+});
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
