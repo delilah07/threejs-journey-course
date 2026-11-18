@@ -37,6 +37,9 @@ rgbeLoader.load('./urban_alley_01_1k.hdr', (environmentMap) => {
 });
 
 // Wobble
+debugObject.colorA = '#1de916';
+debugObject.colorB = '#2b00ff';
+
 const uniforms = {
   uTime: new THREE.Uniform(0),
   uPositionFrequency: new THREE.Uniform(0.5),
@@ -46,6 +49,9 @@ const uniforms = {
   uWarpPositionFrequency: new THREE.Uniform(0.38),
   uWarpTimeFrequency: new THREE.Uniform(0.12),
   uWarpStrength: new THREE.Uniform(1.7),
+
+  uColorA: new THREE.Uniform(new THREE.Color(debugObject.colorA)),
+  uColorB: new THREE.Uniform(new THREE.Color(debugObject.colorB)),
 };
 
 // Material
@@ -58,7 +64,7 @@ const material = new CustomShaderMaterial({
   uniforms: uniforms,
 
   //MeshPhysicalMaterial
-  metalness: 1,
+  metalness: 0.5,
   roughness: 0,
   color: '#ffffff',
   transmission: 0,
@@ -94,12 +100,18 @@ gui
   .name('uWarpTimeFrequency');
 gui.add(uniforms.uWarpStrength, 'value', 0, 2, 0.001).name('uWarpStrength');
 
+gui
+  .addColor(debugObject, 'colorA')
+  .onChange(() => uniforms.uColorA.value.set(debugObject.colorA));
+gui
+  .addColor(debugObject, 'colorB')
+  .onChange(() => uniforms.uColorA.value.set(debugObject.colorB));
+
 gui.add(material, 'metalness', 0, 1, 0.001);
 gui.add(material, 'roughness', 0, 1, 0.001);
 gui.add(material, 'transmission', 0, 1, 0.001);
 gui.add(material, 'ior', 0, 10, 0.001);
 gui.add(material, 'thickness', 0, 10, 0.001);
-gui.addColor(material, 'color');
 
 // Geometry
 let geometry = new THREE.IcosahedronGeometry(2.5, 50);
