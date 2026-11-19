@@ -1,3 +1,20 @@
+varying vec3 vPosition;
+
+uniform float uSliceStart;
+uniform float uSliceArc;
+
 void main(){
-    csm_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    // float uSliceStart = 1.0;
+    // float uSliceArc = 1.5;
+    float angle = atan(vPosition.y, vPosition.x);
+    angle -=uSliceStart;
+    angle = mod(angle, PI * 2.0);
+
+    if(angle > 0.0 && angle < uSliceArc) discard;
+
+    // csm_FragColor = vec4(vec3(angle), 1.0);
+
+    // if(!gl_FrontFacing) csm_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+
+    float csm_Slice;
 }

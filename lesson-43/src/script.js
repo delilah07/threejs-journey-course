@@ -40,6 +40,27 @@ rgbeLoader.load('./aerodynamics_workshop.hdr', (environmentMap) => {
 // Geometry
 const geometry = new THREE.IcosahedronGeometry(2.5, 5);
 
+// Uniforms
+const uniforms = {
+  uSliceStart: new THREE.Uniform(1.75),
+  uSliceArc: new THREE.Uniform(1.25),
+};
+
+// GUI
+gui
+  .add(uniforms.uSliceStart, 'value', -Math.PI, Math.PI, 0.001)
+  .name('uSliceStart');
+gui.add(uniforms.uSliceArc, 'value', 0, Math.PI * 2, 0.001).name('uSliceArc');
+
+// Patch map
+const patchMap = {
+  csm_Slice: {
+    '#include <colorspace_fragment>': `#include <colorspace_fragment>
+     if(!gl_FrontFacing) gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    `,
+  },
+};
+
 // Material
 const material = new THREE.MeshStandardMaterial({
   metalness: 0.5,
@@ -52,12 +73,26 @@ const slicedMaterial = new CustomShaderMaterial({
   baseMaterial: THREE.MeshStandardMaterial,
   vertexShader: slicedVertexShader,
   fragmentShader: slicedFragmentShader,
+  uniforms,
+  patchMap,
 
   // MashStandardMaterial
   metalness: 0.5,
   roughness: 0.25,
   envMapIntensity: 0.5,
   color: '#858080',
+  side: THREE.DoubleSide,
+});
+const slicedDepthMaterial = new CustomShaderMaterial({
+  // CSM
+  baseMaterial: THREE.MeshDepthMaterial,
+  vertexShader: slicedVertexShader,
+  fragmentShader: slicedFragmentShader,
+  uniforms,
+  patchMap,
+
+  // MashDepthMaterial
+  depthPacking: THREE.RGBADepthPacking,
 });
 
 // Model
@@ -66,9 +101,12 @@ gltfLoader.load('./gears.glb', (gltf) => {
   model = gltf.scene;
   model.traverse((child) => {
     if (child.isMesh) {
-      child.name === 'outerHull'
-        ? (child.material = slicedMaterial)
-        : (child.material = material);
+      if (child.name === 'outerHull') {
+        child.material = slicedMaterial;
+        child.customDepthMaterial = slicedDepthMaterial;
+      } else {
+        child.material = material;
+      }
       child.castShadow = true;
       child.receiveShadow = true;
     }
@@ -155,6 +193,8 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1;
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(sizes.pixelRatio);
+
+// renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 
 // Animate
 const clock = new THREE.Clock();
