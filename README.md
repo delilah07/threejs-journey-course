@@ -53,3 +53,4 @@ lesson 39. Particles Cursor Animation: https://delilah07.github.io/threejs-journ
 lesson 40. Particles Morphing: https://delilah07.github.io/threejs-journey-course/lesson-40/dist/ \
 lesson 41. GPGPU Flow Field Particles: https://delilah07.github.io/threejs-journey-course/lesson-41/dist/ \
 lesson 42. Wobbly Sphere: https://delilah07.github.io/threejs-journey-course/lesson-42/dist/ \
+lesson 43. Sliced Model: https://delilah07.github.io/threejs-journey-course/lesson-43/dist/ \
