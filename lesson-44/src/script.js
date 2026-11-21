@@ -2,7 +2,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 import { Brush, Evaluator, SUBTRACTION } from 'three-bvh-csg';
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
 import GUI from 'lil-gui';
+
+import TerrainVertexShader from './shaders/terrain/vertex.glsl';
+import TerrainFragmentShader from './shaders/terrain/fragment.glsl';
 
 // Base
 // Debug
@@ -27,12 +31,12 @@ rgbeLoader.load('/spruit_sunrise.hdr', (environmentMap) => {
   scene.environment = environmentMap;
 });
 
-// Placeholder
-const placeholder = new THREE.Mesh(
-  new THREE.IcosahedronGeometry(2, 5),
-  new THREE.MeshPhysicalMaterial(),
-);
-scene.add(placeholder);
+// // Placeholder
+// const placeholder = new THREE.Mesh(
+//   new THREE.IcosahedronGeometry(2, 5),
+//   new THREE.MeshPhysicalMaterial(),
+// );
+// scene.add(placeholder);
 
 // Board
 const boardFill = new Brush(new THREE.BoxGeometry(11, 2, 11));
@@ -55,6 +59,31 @@ board.material = new THREE.MeshStandardMaterial({
 board.castShadow = true;
 board.receiveShadow = true;
 scene.add(board);
+
+// Terrain
+const geometry = new THREE.PlaneGeometry(10, 10, 500, 500);
+geometry.deleteAttribute('uv');
+geometry.deleteAttribute('normal');
+geometry.rotateX(-Math.PI * 0.5);
+
+// Terrain Material
+const material = new CustomShaderMaterial({
+  // CSM
+  baseMaterial: THREE.MeshStandardMaterial,
+  vertexShader: TerrainVertexShader,
+  fragmentShader: TerrainFragmentShader,
+
+  // MeshStandartMaterial
+  metalness: 0,
+  roughness: 0.5,
+  color: '#85d534',
+});
+
+// Terrain Mesh
+const terrain = new THREE.Mesh(geometry, material);
+terrain.castShadow = true;
+terrain.receiveShadow = true;
+scene.add(terrain);
 
 // Lights
 const directionalLight = new THREE.DirectionalLight('#ffffff', 2);
