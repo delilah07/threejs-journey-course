@@ -61,10 +61,27 @@ board.receiveShadow = true;
 scene.add(board);
 
 // Terrain
+// Terrain Geomentry
 const geometry = new THREE.PlaneGeometry(10, 10, 500, 500);
 geometry.deleteAttribute('uv');
 geometry.deleteAttribute('normal');
 geometry.rotateX(-Math.PI * 0.5);
+
+// Terrain Uniforms
+const uniforms = {
+  uPositionFrequency: new THREE.Uniform(0.2),
+  uStrength: new THREE.Uniform(2.0),
+  uWarpFrequency: new THREE.Uniform(5),
+  uWarpStrength: new THREE.Uniform(0.5),
+};
+
+// Gui
+gui
+  .add(uniforms.uPositionFrequency, 'value', 0, 1, 0.001)
+  .name('uPositionFrequency');
+gui.add(uniforms.uStrength, 'value', 0, 10, 0.001).name('uStrength');
+gui.add(uniforms.uWarpFrequency, 'value', 0, 10, 0.001).name('uWarpFrequency');
+gui.add(uniforms.uWarpStrength, 'value', 0, 1, 0.001).name('uWarpStrength');
 
 // Terrain Material
 const material = new CustomShaderMaterial({
@@ -72,6 +89,7 @@ const material = new CustomShaderMaterial({
   baseMaterial: THREE.MeshStandardMaterial,
   vertexShader: TerrainVertexShader,
   fragmentShader: TerrainFragmentShader,
+  uniforms: uniforms,
 
   // MeshStandartMaterial
   metalness: 0,
