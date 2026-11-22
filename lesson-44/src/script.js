@@ -24,7 +24,7 @@ const scene = new THREE.Scene();
 const rgbeLoader = new RGBELoader();
 
 // Environment map
-rgbeLoader.load('/spruit_sunrise.hdr', (environmentMap) => {
+rgbeLoader.load('./spruit_sunrise.hdr', (environmentMap) => {
   environmentMap.mapping = THREE.EquirectangularReflectionMapping;
 
   scene.background = environmentMap;
