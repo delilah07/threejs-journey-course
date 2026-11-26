@@ -161,7 +161,7 @@ const unrealBloomPass = new UnrealBloomPass();
 unrealBloomPass.strength = 0.3;
 unrealBloomPass.radius = 1;
 unrealBloomPass.threshold = 0.6;
-unrealBloomPass.enabled = true;
+unrealBloomPass.enabled = false;
 effectComposer.addPass(unrealBloomPass);
 
 // Custom Pass - Tint Pass
@@ -193,6 +193,7 @@ const TintShader = {
 };
 const tintPass = new ShaderPass(TintShader);
 tintPass.material.uniforms.uTint.value = new THREE.Vector3();
+tintPass.enabled = false;
 effectComposer.addPass(tintPass);
 
 // Custom Pass - Displacement Pass
@@ -227,6 +228,47 @@ const displacementPass = new ShaderPass(DisplacementShader);
 displacementPass.material.uniforms.uTime.value = 0;
 displacementPass.enabled = false;
 effectComposer.addPass(displacementPass);
+
+// Custom Pass - Displacement Texture Pass
+const DisplacementTextureShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    uNormalMap: { value: null },
+  },
+  vertexShader: `
+    varying vec2 vUv;
+
+    void main(){
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      vUv = uv;
+    }
+  `,
+  fragmentShader: `
+    uniform sampler2D tDiffuse;
+    uniform sampler2D uNormalMap;
+
+    varying vec2 vUv;
+
+    void main(){
+      vec3 normalColor = texture2D(uNormalMap, vUv).xyz * 2.0 - 1.0;
+      
+      vec2 newUv = vUv + normalColor.xy * 0.1;
+      vec4 color = texture2D(tDiffuse, newUv);
+
+      vec3 lightDirection = normalize(vec3(-1.0, 1.0, 0.0));
+      float lightness = clamp(dot(normalColor, lightDirection), 0.0, 1.0);
+      color += lightness * 2.0;
+
+      gl_FragColor = color;
+    }
+  `,
+};
+const displacementTexturePass = new ShaderPass(DisplacementTextureShader);
+displacementTexturePass.material.uniforms.uNormalMap.value = textureLoader.load(
+  '/textures/interfaceNormalMap.png',
+);
+displacementTexturePass.enabled = true;
+effectComposer.addPass(displacementTexturePass);
 
 // Gamma Correction pass
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
@@ -275,6 +317,7 @@ gui
   .step(0.001)
   .name('Tint Pass blue');
 gui.add(displacementPass, 'enabled').name('Custom Displacement Pass');
+gui.add(displacementTexturePass, 'enabled').name('Custom Disp. Texture Pass');
 
 // Animate
 const timer = new THREE.Timer();
