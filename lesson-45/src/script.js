@@ -195,6 +195,39 @@ const tintPass = new ShaderPass(TintShader);
 tintPass.material.uniforms.uTint.value = new THREE.Vector3();
 effectComposer.addPass(tintPass);
 
+// Custom Pass - Displacement Pass
+const DisplacementShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    uTime: { value: null },
+  },
+  vertexShader: `
+    varying vec2 vUv;
+
+    void main(){
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      vUv = uv;
+    }
+  `,
+  fragmentShader: `
+    uniform sampler2D tDiffuse;
+    uniform float uTime;
+
+    varying vec2 vUv;
+
+    void main(){
+      vec2 newUv = vec2(vUv.x, vUv.y + sin(vUv.x * 10.0 + uTime) * 0.1);
+
+      vec4 color = texture2D(tDiffuse, newUv);
+      gl_FragColor = color;
+    }
+  `,
+};
+const displacementPass = new ShaderPass(DisplacementShader);
+displacementPass.material.uniforms.uTime.value = 0;
+displacementPass.enabled = false;
+effectComposer.addPass(displacementPass);
+
 // Gamma Correction pass
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
 effectComposer.addPass(gammaCorrectionPass);
@@ -241,6 +274,7 @@ gui
   .max(1)
   .step(0.001)
   .name('Tint Pass blue');
+gui.add(displacementPass, 'enabled').name('Custom Displacement Pass');
 
 // Animate
 const timer = new THREE.Timer();
@@ -248,6 +282,9 @@ const timer = new THREE.Timer();
 const tick = () => {
   timer.update();
   const elapsedTime = timer.getElapsed();
+
+  // Update passes
+  displacementPass.material.uniforms.uTime.value = elapsedTime;
 
   // Update controls
   controls.update();
