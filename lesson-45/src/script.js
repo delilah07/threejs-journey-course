@@ -10,6 +10,7 @@ import { GlitchPass } from 'three/examples/jsm/postprocessing/GlitchPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader.js';
 import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectionShader.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 // Base
 // Debug
@@ -90,6 +91,10 @@ window.addEventListener('resize', () => {
   // Update renderer
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Update effect composer
+  effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  effectComposer.setSize(sizes.width, sizes.height);
 });
 
 // Camera
@@ -121,7 +126,13 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // Post processing
-const effectComposer = new EffectComposer(renderer);
+// Fixing tha antialias - Render Target
+const renderTarget = new THREE.WebGLRenderTarget(800, 600, {
+  samples: renderer.getPixelRatio() === 1 ? 2 : 0,
+});
+
+// Effect Composer
+const effectComposer = new EffectComposer(renderer, renderTarget);
 effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 effectComposer.setSize(sizes.width, sizes.height);
 
@@ -137,8 +148,16 @@ effectComposer.addPass(dotScreenPass);
 // Glitch pass
 const glitchPass = new GlitchPass();
 glitchPass.goWild = false;
-glitchPass.enabled = true;
+glitchPass.enabled = false;
 effectComposer.addPass(glitchPass);
+
+// Unreal Bloom pass
+const unrealBloomPass = new UnrealBloomPass();
+unrealBloomPass.strength = 0.3;
+unrealBloomPass.radius = 1;
+unrealBloomPass.threshold = 0.6;
+unrealBloomPass.enabled = true;
+effectComposer.addPass(unrealBloomPass);
 
 // RGB Shift pass
 const rgbShiftPass = new ShaderPass(RGBShiftShader);
@@ -148,6 +167,12 @@ effectComposer.addPass(rgbShiftPass);
 // Gamma Correction pass
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
 effectComposer.addPass(gammaCorrectionPass);
+
+// GUI
+gui.add(unrealBloomPass, 'enabled');
+gui.add(unrealBloomPass, 'strength').min(0).max(2).step(0.001);
+gui.add(unrealBloomPass, 'radius').min(0).max(2).step(0.001);
+gui.add(unrealBloomPass, 'threshold').min(0).max(1).step(0.001);
 
 // Animate
 const timer = new THREE.Timer();
