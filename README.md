@@ -56,3 +56,4 @@ lesson 42. Wobbly Sphere: https://delilah07.github.io/threejs-journey-course/les
 lesson 43. Sliced Model: https://delilah07.github.io/threejs-journey-course/lesson-43/dist/ \
 lesson 44. Procedural Terrain: https://delilah07.github.io/threejs-journey-course/lesson-44/dist/ \
 lesson 45. Post-processing: https://delilah07.github.io/threejs-journey-course/lesson-45/dist/ \
+lesson 46. Performance tips: https://delilah07.github.io/threejs-journey-course/lesson-46/dist/ \
