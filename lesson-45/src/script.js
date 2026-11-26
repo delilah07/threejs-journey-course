@@ -151,6 +151,11 @@ glitchPass.goWild = false;
 glitchPass.enabled = false;
 effectComposer.addPass(glitchPass);
 
+// RGB Shift pass
+const rgbShiftPass = new ShaderPass(RGBShiftShader);
+rgbShiftPass.enabled = false;
+effectComposer.addPass(rgbShiftPass);
+
 // Unreal Bloom pass
 const unrealBloomPass = new UnrealBloomPass();
 unrealBloomPass.strength = 0.3;
@@ -159,20 +164,83 @@ unrealBloomPass.threshold = 0.6;
 unrealBloomPass.enabled = true;
 effectComposer.addPass(unrealBloomPass);
 
-// RGB Shift pass
-const rgbShiftPass = new ShaderPass(RGBShiftShader);
-rgbShiftPass.enabled = false;
-effectComposer.addPass(rgbShiftPass);
+// Custom Pass - Tint Pass
+const TintShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    uTint: { value: null },
+  },
+  vertexShader: `
+    varying vec2 vUv;
+
+    void main(){
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      vUv = uv;
+    }
+  `,
+  fragmentShader: `
+    uniform sampler2D tDiffuse;
+    uniform vec3 uTint;
+
+    varying vec2 vUv;
+
+    void main(){
+      vec4 color = texture2D(tDiffuse, vUv);
+      color.rgb += uTint;
+      gl_FragColor = color;
+    }
+  `,
+};
+const tintPass = new ShaderPass(TintShader);
+tintPass.material.uniforms.uTint.value = new THREE.Vector3();
+effectComposer.addPass(tintPass);
 
 // Gamma Correction pass
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
 effectComposer.addPass(gammaCorrectionPass);
 
 // GUI
-gui.add(unrealBloomPass, 'enabled');
-gui.add(unrealBloomPass, 'strength').min(0).max(2).step(0.001);
-gui.add(unrealBloomPass, 'radius').min(0).max(2).step(0.001);
-gui.add(unrealBloomPass, 'threshold').min(0).max(1).step(0.001);
+gui.add(dotScreenPass, 'enabled').name('Dot Scree nPass');
+gui.add(glitchPass, 'enabled').name('Glitch Pass');
+gui.add(rgbShiftPass, 'enabled').name('RGB Shift Pass');
+gui.add(unrealBloomPass, 'enabled').name('Unreal Bloom Pass');
+gui
+  .add(unrealBloomPass, 'strength')
+  .min(0)
+  .max(2)
+  .step(0.001)
+  .name('unrealBloomPass strength');
+gui
+  .add(unrealBloomPass, 'radius')
+  .min(0)
+  .max(2)
+  .step(0.001)
+  .name('unrealBloomPass radius');
+gui
+  .add(unrealBloomPass, 'threshold')
+  .min(0)
+  .max(1)
+  .step(0.001)
+  .name('unrealBloomPass threshold');
+gui.add(tintPass, 'enabled').name('Custom Tint Pass');
+gui
+  .add(tintPass.material.uniforms.uTint.value, 'x')
+  .min(-1)
+  .max(1)
+  .step(0.001)
+  .name('Tint Pass red');
+gui
+  .add(tintPass.material.uniforms.uTint.value, 'y')
+  .min(-1)
+  .max(1)
+  .step(0.001)
+  .name('Tint Pass green');
+gui
+  .add(tintPass.material.uniforms.uTint.value, 'z')
+  .min(-1)
+  .max(1)
+  .step(0.001)
+  .name('Tint Pass blue');
 
 // Animate
 const timer = new THREE.Timer();
